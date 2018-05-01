@@ -47,7 +47,7 @@ public class PlayerScript : MonoBehaviour {
 				direction.z = direction.y;
 				direction.y = 0;
 				tobasikoma.GetComponent<Rigidbody> ().AddForce (direction.normalized * power);
-				direction = new Vector3 (0, 0, 0);
+				direction = Vector3.zero;
 				flagB = 2;
 			}
 		}

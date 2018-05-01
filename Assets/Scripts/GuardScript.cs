@@ -12,16 +12,19 @@ public class GuardScript : MonoBehaviour {
 	//　モード
 	[SerializeField]
 	private Mode mode;
-	//　FixedJoint
 	private FixedJoint fixedJoint;
-	//　外れる力
 	[SerializeField]
 	private float breakForce = 200f;
-	//　外れる角度
 	[SerializeField]
 	private float breakTorque = 200f;
-	//　刺さっているかどうか
 	private bool isSticking;
+
+	public int flagC = 1;
+	public int FlagC{
+		get{ return this.flagC; }  //取得用
+		private set{ this.flagC = value; }　//値入力用
+	}
+
 
 	void Start() {
 		if(mode == Mode.collision) {
@@ -34,18 +37,18 @@ public class GuardScript : MonoBehaviour {
 	//　衝突ありの場合
 	void OnCollisionEnter(Collision col) {
 		if (!isSticking) {
-			JudgeEnemy (col.collider);
+			JudgeOther (col.collider);
 		}
 	}
 
 	//　接触なしの場合
 	void OnTriggerEnter(Collider col) {
 		if (!isSticking) {
-			JudgeEnemy (col);
+			JudgeOther (col);
 		}
 	}
 
-	void JudgeEnemy(Collider col) {
+	void JudgeOther(Collider col) {
 		if (col.gameObject.tag == "Koma1") {
 			if (fixedJoint == null) {
 				gameObject.AddComponent<FixedJoint> ();
@@ -55,6 +58,10 @@ public class GuardScript : MonoBehaviour {
 				//fixedJoint.breakTorque = breakTorque;
 				fixedJoint.enableCollision = true;
 				isSticking = true;
+
+				col.gameObject.SendMessage("Mass0");  //質量を0にする
+				flagC =2;
+				Debug.Log ("1");
 				//　Rigidbodyの速度を0にし、スリープ状態にして止める
 				GetComponent <Rigidbody> ().velocity = Vector3.zero;
 				GetComponent <Rigidbody> ().Sleep ();
