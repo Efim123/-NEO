@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
 	public int power = 1000;
@@ -13,13 +14,17 @@ public class PlayerScript : MonoBehaviour {
 	int flagB = 2;
 	public GameObject tobasikoma;
 
+
+	public Text onePText;
+	public Text twoPText;
+
 	// Use this for initialization
 	void Start () {
-		
+		onePText.text = "1Pのターン";
 	}
 	// Update is called once per frame
 	void Update () {
-		
+
 		if (Input.GetMouseButtonDown (0)) {
 			Ray ray = new Ray ();
 			RaycastHit hit = new RaycastHit ();
@@ -30,12 +35,10 @@ public class PlayerScript : MonoBehaviour {
 				if (hit.collider.gameObject.CompareTag (komaTag + flagA.ToString ())) { 
 					clickPosDown = Input.mousePosition;
 					tobasikoma = hit.collider.gameObject;
-					turn++;
-					flagA = turn % 2;
 					flagB = 1; //flagBがないと下のifが働かない
+					}
 				}
 			}
-		}
 
 		if (Input.GetMouseButtonUp (0)) {
 			if (flagB == 1) {
@@ -43,12 +46,26 @@ public class PlayerScript : MonoBehaviour {
 				if (clickPosUp == clickPosDown) {
 					return;
 				}
-				direction = (clickPosUp - clickPosDown);
+					
+
+				direction = (clickPosDown - clickPosUp);
 				direction.z = direction.y;
 				direction.y = 0;
 				tobasikoma.GetComponent<Rigidbody> ().AddForce (direction.normalized * power);
 				direction = Vector3.zero;
+				turn++;
+				flagA = turn % 2;
 				flagB = 2;
+
+			if (flagA == 1) {
+				onePText.text = "1Pのターン";
+				twoPText.text = null;
+			}
+
+			if (flagA == 0) {
+				onePText.text = null;
+				twoPText.text = "2Pのターン";
+		}
 			}
 		}
 	}

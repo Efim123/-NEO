@@ -19,13 +19,6 @@ public class GuardScript : MonoBehaviour {
 	private float breakTorque = 200f;
 	private bool isSticking;
 
-	public int flagC = 1;
-	public int FlagC{
-		get{ return this.flagC; }  //取得用
-		private set{ this.flagC = value; }　//値入力用
-	}
-
-
 	void Start() {
 		if(mode == Mode.collision) {
 			GetComponentInChildren<Collider>().isTrigger = false;
@@ -49,28 +42,27 @@ public class GuardScript : MonoBehaviour {
 	}
 
 	void JudgeOther(Collider col) {
-		if (col.gameObject.tag == "Koma1") {
-			if (fixedJoint == null) {
+		if (col.gameObject.tag == "Koma0"||col.gameObject.tag == "Koma1") {
+				if (fixedJoint == null) {
 				gameObject.AddComponent<FixedJoint> ();
 				fixedJoint = GetComponent<FixedJoint> ();
 				fixedJoint.connectedBody = col.gameObject.GetComponent<Rigidbody> ();
-				//fixedJoint.breakForce = breakForce;
-				//fixedJoint.breakTorque = breakTorque;
+
 				fixedJoint.enableCollision = true;
 				isSticking = true;
 
-				col.gameObject.SendMessage("Mass0");  //質量を0にする
-				flagC =2;
+				 //質量を0にする
+
 				Debug.Log ("1");
 				//　Rigidbodyの速度を0にし、スリープ状態にして止める
 				GetComponent <Rigidbody> ().velocity = Vector3.zero;
 				GetComponent <Rigidbody> ().Sleep ();
 			}
-		} 
+		}
 	}
 		//　ジョイントが解除された時に呼ばれる
-		/*void OnJointBreak() {
+	void OnJointBreak() {
 		isSticking = false;
-	}*/
+	}
 }
 
