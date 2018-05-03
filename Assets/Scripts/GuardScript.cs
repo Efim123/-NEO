@@ -51,7 +51,7 @@ public class GuardScript : MonoBehaviour {
 				fixedJoint.enableCollision = true;
 				isSticking = true;
 
-				 //質量を0にする
+				col.gameObject.SendMessage("Mass0");  //質量を0にする
 
 				Debug.Log ("1");
 				//　Rigidbodyの速度を0にし、スリープ状態にして止める

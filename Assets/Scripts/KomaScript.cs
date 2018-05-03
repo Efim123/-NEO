@@ -4,22 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class KomaScript : MonoBehaviour {
-	public int komaHP = 1;
-	public Text HPLabel;
+	public int komaHP = 2;
 	public Rigidbody rb;
 	public float soleMass = 1.5f;
-
-
+	int flagC =1;
+	Vector3 latestPos;
+	float speed;
 
 	// Use this for initialization
 	void Start () {
+		rb = this.GetComponent<Rigidbody>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//HPLabel.text = "HP:" + komaHP.ToString ();
+		
+		speed = ((this.transform.position - latestPos) / Time.deltaTime).magnitude;
+		latestPos = this.transform.position; 
+
 		if (transform.position.y <= -5 || komaHP ==0){
 			Destroy (this.gameObject);
+		}
+
+		if(speed < 0.00005f){
+			flagC = 1;
 		}
 	}
 		
@@ -28,20 +36,20 @@ public class KomaScript : MonoBehaviour {
 		rb.mass = 0;
 	}
 
+	void Attack(){
+		flagC = 2;
+	}
+
 	void OnCollisionEnter(Collision col) {
 		if(col.gameObject.tag == "Koma0"||col.gameObject.tag == "Koma1"){
-			rb = this.GetComponent<Rigidbody>();
-			rb.mass = soleMass; //⇦ここでおかしくなる
-			Debug.Log("2");
+			//if (flagC == 2) {
+				col.gameObject.SendMessage("Damage");
+			Debug.Log ("4");
+			//}
 		}
 	}
 
-	/*void OnCollisionStay(Collision col) {
-		if(col.gameObject.tag == "Guard"){
-			GameObject.DestroyImmediate(FixedJoint);
-			rb = this.GetComponent<Rigidbody>();
-			rb.mass = soleMass; 
-			Debug.Log("3");
-		}
-	}*/
+	void Dmage(){
+		komaHP--;
+	}
 }

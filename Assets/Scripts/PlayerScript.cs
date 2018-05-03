@@ -53,6 +53,10 @@ public class PlayerScript : MonoBehaviour {
 				direction.y = 0;
 				tobasikoma.GetComponent<Rigidbody> ().AddForce (direction.normalized * power);
 				direction = Vector3.zero;
+
+				tobasikoma.SendMessage ("Attack");
+
+				Debug.Log (3);
 				turn++;
 				flagA = turn % 2;
 				flagB = 2;
