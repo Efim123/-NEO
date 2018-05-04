@@ -60,7 +60,7 @@ public class PlayerScript : MonoBehaviour {
 				turn++;
 				flagA = turn % 2;
 				flagB = 2;
-				Invoke ("Turn", 2.0f);
+				Invoke ("Turn", 1.2f);
 			}
 		}
 	}

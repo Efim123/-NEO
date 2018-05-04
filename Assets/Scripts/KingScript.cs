@@ -7,8 +7,7 @@ public class KingScript : MonoBehaviour {
 	public int komaHP = 5;
 	public Text HPLabel;
 	public GameObject result;
-	public GameObject retry;
-
+	int flagC =1;
 	void Start () {
 
 	}
@@ -16,14 +15,36 @@ public class KingScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		HPLabel.text = "HP:" + komaHP.ToString ();
-		if (transform.position.y <= -10 || komaHP == 0) {
-			Destroy (this.gameObject);
-			result.gameObject.SetActive(true);
-			Invoke ("Retry", 1.0f);
+		if (transform.position.y <= -5 || komaHP == 0) {
+			Invoke ("Retry", 0.5f);
 		}
 	}
 
 	void Retry(){
-		retry.SetActive (true);
+		result.SetActive (true);
+		Destroy (this.gameObject);
+	}
+
+	public void Attack(){
+		flagC = 2;
+		Debug.Log ("4");
+		Invoke ("FlagC", 1.5f);
+	}
+
+	void OnCollisionEnter(Collision col) {
+		if (flagC == 2) {
+			if(col.gameObject.tag == "Koma0"||col.gameObject.tag == "Koma1"){
+				col.gameObject.SendMessage("Damage");
+			}
+		}
+	}
+
+	public void Damage(){
+		komaHP--;
+		Debug.Log ("6");
+	}
+
+	public void FlagC(){
+		flagC = 1;
 	}
 }
