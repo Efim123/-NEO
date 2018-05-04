@@ -60,17 +60,20 @@ public class PlayerScript : MonoBehaviour {
 				turn++;
 				flagA = turn % 2;
 				flagB = 2;
-
-			if (flagA == 1) {
-				onePText.text = "1Pのターン";
-				twoPText.text = null;
+				Invoke ("Turn", 2.0f);
 			}
-
-			if (flagA == 0) {
-				onePText.text = null;
-				twoPText.text = "2Pのターン";
 		}
-			}
+	}
+
+	void Turn(){
+		if (flagA == 1) {
+			onePText.text = "1Pのターン";
+			twoPText.text = null;
+		}
+
+		if (flagA == 0) {
+			onePText.text = null;
+			twoPText.text = "2Pのターン";
 		}
 	}
 }

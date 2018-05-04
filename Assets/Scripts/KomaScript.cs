@@ -10,6 +10,7 @@ public class KomaScript : MonoBehaviour {
 	int flagC =1;
 	Vector3 latestPos;
 	float speed;
+	float timer = 0.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -18,16 +19,8 @@ public class KomaScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-		speed = ((this.transform.position - latestPos) / Time.deltaTime).magnitude;
-		latestPos = this.transform.position; 
-
 		if (transform.position.y <= -5 || komaHP ==0){
 			Destroy (this.gameObject);
-		}
-
-		if(speed < 0.00005f){
-			flagC = 1;
 		}
 	}
 		
@@ -36,20 +29,26 @@ public class KomaScript : MonoBehaviour {
 		rb.mass = 0;
 	}
 
-	void Attack(){
+	public void Attack(){
 		flagC = 2;
+		Debug.Log ("4");
+		Invoke ("FlagC", 2.0f);
 	}
 
 	void OnCollisionEnter(Collision col) {
-		if(col.gameObject.tag == "Koma0"||col.gameObject.tag == "Koma1"){
-			//if (flagC == 2) {
+		if (flagC == 2) {
+			if(col.gameObject.tag == "Koma0"||col.gameObject.tag == "Koma1"){
 				col.gameObject.SendMessage("Damage");
-			Debug.Log ("4");
-			//}
+			}
 		}
 	}
 
-	void Dmage(){
+	public void Damage(){
 		komaHP--;
+		Debug.Log ("6");
+	}
+
+	public void FlagC(){
+		flagC = 1;
 	}
 }
