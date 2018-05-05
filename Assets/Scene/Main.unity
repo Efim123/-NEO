@@ -1545,7 +1545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 991b563bedb1c4416aa73d15f7dadba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 1000
+  power: 20
   direction: {x: 1, y: 0, z: 1}
   komaTag: Koma
   tobasikoma: {fileID: 2057538605}

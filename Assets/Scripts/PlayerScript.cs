@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
-	public int power = 0;
+	public float power = 0.0f;
 	public Vector3 direction = new Vector3 (1, 0, 1);
 	Vector3 clickPosDown; 
 	Vector3 clickPosUp;
@@ -54,12 +54,12 @@ public class PlayerScript : MonoBehaviour {
 
 				distance = (clickPosDown - clickPosUp).magnitude;
 
-				if(distance > 40){
-					distance = 40;
+				if(distance > 60){
+					distance = 60;
 					Debug.Log (distance);
 				}
 
-				tobasikoma.GetComponent<Rigidbody> ().AddForce (direction.normalized *  power);
+				tobasikoma.GetComponent<Rigidbody> ().AddForce (direction.normalized  * power * distance);
 
 
 				direction = Vector3.zero;

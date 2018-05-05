@@ -28,8 +28,6 @@ public class Koma1Script : MonoBehaviour {
 		if (transform.position.y <= -5 || komaHP ==0){
 			Destroy (this.gameObject);
 		}
-
-
 	}
 		
 	public void Attack(){
