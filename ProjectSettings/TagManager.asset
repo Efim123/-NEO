@@ -8,6 +8,7 @@ TagManager:
   - Koma1
   - Guard0
   - Guard1
+  - KomaStick
   layers:
   - Default
   - TransparentFX

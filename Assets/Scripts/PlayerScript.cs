@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
-	public int power = 1000;
+	public int power = 0;
 	public Vector3 direction = new Vector3 (1, 0, 1);
 	Vector3 clickPosDown; 
 	Vector3 clickPosUp;
@@ -13,7 +13,7 @@ public class PlayerScript : MonoBehaviour {
 	int flagA = 1;
 	int flagB = 2;
 	public GameObject tobasikoma;
-
+	float distance;
 
 	public Text onePText;
 	public Text twoPText;
@@ -51,12 +51,22 @@ public class PlayerScript : MonoBehaviour {
 				direction = (clickPosDown - clickPosUp);
 				direction.z = direction.y;
 				direction.y = 0;
-				tobasikoma.GetComponent<Rigidbody> ().AddForce (direction.normalized * power);
+
+				distance = (clickPosDown - clickPosUp).magnitude;
+
+				if(distance > 40){
+					distance = 40;
+					Debug.Log (distance);
+				}
+
+				tobasikoma.GetComponent<Rigidbody> ().AddForce (direction.normalized *  power);
+
+
 				direction = Vector3.zero;
+				distance = 0.0f;
 
 				tobasikoma.SendMessage ("Attack");
 
-				Debug.Log (3);
 				turn++;
 				flagA = turn % 2;
 				flagB = 2;

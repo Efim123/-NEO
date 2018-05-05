@@ -33,7 +33,7 @@ public class KingScript : MonoBehaviour {
 
 	void OnCollisionEnter(Collision col) {
 		if (flagC == 2) {
-			if(col.gameObject.tag == "Koma0"||col.gameObject.tag == "Koma1"){
+			if(col.gameObject.tag == "Koma0"||col.gameObject.tag == "Koma1"||col.gameObject.tag == "KomaStick"){
 				col.gameObject.SendMessage("Damage");
 			}
 		}

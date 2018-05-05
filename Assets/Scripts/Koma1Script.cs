@@ -9,8 +9,7 @@ public class Koma1Script : MonoBehaviour {
 	public float soleMass = 1.5f;
 	int flagC =1;
 	int stickingflag =1;
-	Vector3 latestPos;
-	float speed;
+
 	float timer = 0.0f;
 	public GameObject crack;
 	private FixedJoint fixedJoint;
@@ -33,11 +32,6 @@ public class Koma1Script : MonoBehaviour {
 
 	}
 		
-	void Mass0 (){
-		rb = this.GetComponent<Rigidbody>();
-		rb.mass = 0;
-	}
-
 	public void Attack(){
 		flagC = 2;
 		Invoke ("FlagC", 1.2f);
@@ -51,30 +45,26 @@ public class Koma1Script : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision col) {
-		if (col.gameObject.tag == "Koma0") {
-			if (stickingflag == 2) {
-				gameObject.AddComponent<FixedJoint> ();
-				fixedJoint = GetComponent<FixedJoint> ();
-				fixedJoint.connectedBody = col.gameObject.GetComponent<Rigidbody> ();
-
-				fixedJoint.enableCollision = true;
-
-
-				//col.gameObject.SendMessage ("Mass0");  //質量を0にする
-
-				Debug.Log ("1");
-				//　Rigidbodyの速度を0にし、スリープ状態にして止める
-				//GetComponent <Rigidbody> ().velocity = Vector3.zero;
-				//GetComponent <Rigidbody> ().Sleep ();
-			} 
-			else if (flagC == 2) {
-					col.gameObject.SendMessage ("Damage");
+		if (col.gameObject.tag == "Koma1"||col.gameObject.tag == "KomaStick"){
+			if(flagC == 2){
+				col.gameObject.SendMessage("Damage");
 			}
 		}
 
-		if (flagC == 2){
-			if(col.gameObject.tag == "Koma1"){
-				col.gameObject.SendMessage("Damage");
+		if (col.gameObject.tag == "Koma0") {
+			if (stickingflag == 2) {
+				if (fixedJoint == null){
+					gameObject.AddComponent<FixedJoint> ();
+					fixedJoint = GetComponent<FixedJoint> ();
+					fixedJoint.connectedBody = col.gameObject.GetComponent<Rigidbody> ();
+
+					fixedJoint.enableCollision = true;
+					col.gameObject.GetComponent<Rigidbody> ().useGravity = false;
+					col.gameObject.tag = "KomaStick";
+				}
+			} 
+			else if (flagC == 2) {
+					col.gameObject.SendMessage ("Damage");
 			}
 		}
 	}
@@ -87,7 +77,6 @@ public class Koma1Script : MonoBehaviour {
 
 	public void Damage(){
 		komaHP--;
-		Debug.Log ("6");
 	}
 
 	public void FlagC(){
