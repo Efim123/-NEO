@@ -8,8 +8,11 @@ public class KingScript : MonoBehaviour {
 	public Text HPLabel;
 	public GameObject result;
 	int flagC =1;
-	void Start () {
 
+	public Material[] _material; 
+
+	void Start () {
+		this.GetComponent<Renderer>().material=_material[0];
 	}
 
 	// Update is called once per frame
@@ -27,8 +30,8 @@ public class KingScript : MonoBehaviour {
 
 	public void Attack(){
 		flagC = 2;
-		Debug.Log ("4");
-		Invoke ("FlagC", 1.5f);
+		this.GetComponent<Renderer>().material=_material[1];
+		Invoke ("FlagC", 1.2f);
 	}
 
 	void OnCollisionEnter(Collision col) {
@@ -46,5 +49,6 @@ public class KingScript : MonoBehaviour {
 
 	public void FlagC(){
 		flagC = 1;
+		this.GetComponent<Renderer>().material=_material[0];
 	}
 }

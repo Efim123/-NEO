@@ -12,6 +12,7 @@ public class PlayerScript : MonoBehaviour {
 	int turn = 1;
 	int flagA = 1;
 	int flagB = 2;
+	int flagC = 1;
 	public GameObject tobasikoma;
 	float distance;
 
@@ -35,13 +36,13 @@ public class PlayerScript : MonoBehaviour {
 				if (hit.collider.gameObject.CompareTag (komaTag + flagA.ToString ())) { 
 					clickPosDown = Input.mousePosition;
 					tobasikoma = hit.collider.gameObject;
-					flagB = 1; //flagBがないと下のifが働かない
+					flagB = 0; //flagBがないと下のifが働かない
 					}
 				}
 			}
 
 		if (Input.GetMouseButtonUp (0)) {
-			if (flagB == 1) {
+			if (flagB == 0) {
 				clickPosUp = Input.mousePosition;
 				if (clickPosUp == clickPosDown) {
 					return;
@@ -54,9 +55,8 @@ public class PlayerScript : MonoBehaviour {
 
 				distance = (clickPosDown - clickPosUp).magnitude;
 
-				if(distance > 60){
-					distance = 60;
-					Debug.Log (distance);
+				if(distance > 40){
+					distance = 40;
 				}
 
 				tobasikoma.GetComponent<Rigidbody> ().AddForce (direction.normalized  * power * distance);
@@ -67,13 +67,14 @@ public class PlayerScript : MonoBehaviour {
 
 				tobasikoma.SendMessage ("Attack");
 
+				flagB = 1;
 				turn++;
 				flagA = turn % 2;
-				flagB = 2;
 				Invoke ("Turn", 1.2f);
 			}
 		}
 	}
+		
 
 	void Turn(){
 		if (flagA == 1) {

@@ -14,8 +14,11 @@ public class Koma1Script : MonoBehaviour {
 	public GameObject crack;
 	private FixedJoint fixedJoint;
 
+	public Material[] _material;     
+
 	// Use this for initialization
 	void Start () {
+		this.GetComponent<Renderer>().material=_material[0]; 
 		rb = this.GetComponent<Rigidbody>();
 	}
 	
@@ -28,10 +31,16 @@ public class Koma1Script : MonoBehaviour {
 		if (transform.position.y <= -5 || komaHP ==0){
 			Destroy (this.gameObject);
 		}
+
+		if (this.gameObject.tag == "KomaStick") {
+			this.GetComponent<Renderer>().material=_material[2]; 
+		}
+
 	}
 		
 	public void Attack(){
 		flagC = 2;
+		this.GetComponent<Renderer>().material=_material[1]; 
 		Invoke ("FlagC", 1.2f);
 	}
 
@@ -45,7 +54,9 @@ public class Koma1Script : MonoBehaviour {
 	void OnCollisionEnter(Collision col) {
 		if (col.gameObject.tag == "Koma1"||col.gameObject.tag == "KomaStick"){
 			if(flagC == 2){
-				col.gameObject.SendMessage("Damage");
+				if (stickingflag == 1) {
+					col.gameObject.SendMessage ("Damage");
+				}
 			}
 		}
 
@@ -57,8 +68,11 @@ public class Koma1Script : MonoBehaviour {
 					fixedJoint.connectedBody = col.gameObject.GetComponent<Rigidbody> ();
 
 					fixedJoint.enableCollision = true;
-					col.gameObject.GetComponent<Rigidbody> ().useGravity = false;
+					//col.gameObject.GetComponent<Rigidbody> ().useGravity = false;
+					//Destroy(col.GetComponent<Rigidbody>());
 					col.gameObject.tag = "KomaStick";
+					col.transform.parent = this.transform;
+					stickingflag =1;
 				}
 			} 
 			else if (flagC == 2) {
@@ -78,6 +92,7 @@ public class Koma1Script : MonoBehaviour {
 	}
 
 	public void FlagC(){
+		this.GetComponent<Renderer>().material=_material[0]; 
 		flagC = 1;
 	}
 }
