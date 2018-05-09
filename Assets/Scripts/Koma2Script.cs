@@ -9,10 +9,12 @@ public class Koma2Script : MonoBehaviour {
 	public float soleMass = 1.5f;
 	int flagC =1;
 	int stickingflag =1;
+	int flagD =2;
 
 	float timer = 0.0f;
 	public GameObject crack;
 	private FixedJoint fixedJoint;
+	private GameObject stick;
 
 	public Material[] _material;     
 
@@ -41,12 +43,18 @@ public class Koma2Script : MonoBehaviour {
 		flagC = 2;
 		this.GetComponent<Renderer>().material=_material[1]; 
 		Invoke ("FlagC", 1.2f);
+		if (stick != null) {
+			if (stick.gameObject.tag == "KomaStick") {
+				stick.SendMessage ("Nonrigid");
+			}
+		}
 	}
 
 	void OnTriggerEnter(Collider coli){
 		if (coli.gameObject.tag == "Guard1") {
-			stickingflag =2;
-			Debug.Log ("4");
+			if (flagD == 1) {
+				stickingflag = 2;
+			}
 		}
 	}
 
@@ -62,16 +70,16 @@ public class Koma2Script : MonoBehaviour {
 		if (col.gameObject.tag == "Koma1") {
 			if (stickingflag == 2) {
 				if (fixedJoint == null){
-					/*gameObject.AddComponent<FixedJoint> ();
+					gameObject.AddComponent<FixedJoint> ();
 					fixedJoint = GetComponent<FixedJoint> ();
 					fixedJoint.connectedBody = col.gameObject.GetComponent<Rigidbody> ();
 
 					fixedJoint.enableCollision = true;
-					col.gameObject.GetComponent<Rigidbody> ().useGravity = false;*/
-					col.transform.parent = this.transform;
+
 					col.gameObject.tag = "KomaStick";
+					col.transform.parent = this.transform;
+					stick = col.gameObject;
 					stickingflag = 1;
-				
 				}
 			} 
 			else if (flagC == 2) {
@@ -93,5 +101,21 @@ public class Koma2Script : MonoBehaviour {
 	public void FlagC(){
 		flagC = 1;
 		this.GetComponent<Renderer>().material=_material[0]; 
+		if (stick != null) {
+			if (stick.gameObject.tag == "KomaStick") {
+				stick.SendMessage ("Onrigid");
+			}
+		}
+	}
+
+	public void Nonrigid(){
+		Rigidbody rigid = (Rigidbody)this.GetComponent<Rigidbody>();
+		GameObject.DestroyImmediate(rigid);
+	}
+
+	public void Onrigid(){
+		//this.GetComponent<Rigidbody>();
+		Rigidbody rigid = (Rigidbody)this.GetComponent<Rigidbody>();
+		Debug.Log (44);
 	}
 }

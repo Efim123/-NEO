@@ -8,22 +8,26 @@ public class Koma1Script : MonoBehaviour {
 	public Rigidbody rb;
 	public float soleMass = 1.5f;
 	int flagC =1;
+	int flagD =1;
+
 	int stickingflag =1;
 
 	float timer = 0.0f;
 	public GameObject crack;
 	private FixedJoint fixedJoint;
+	private GameObject stick;
 
-	public Material[] _material;     
+	public Material[] _material;
 
 	// Use this for initialization
 	void Start () {
 		this.GetComponent<Renderer>().material=_material[0]; 
 		rb = this.GetComponent<Rigidbody>();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
+
 		if (komaHP == 1){
 			crack.SetActive (true);
 		}
@@ -42,12 +46,18 @@ public class Koma1Script : MonoBehaviour {
 		flagC = 2;
 		this.GetComponent<Renderer>().material=_material[1]; 
 		Invoke ("FlagC", 1.2f);
+		if(stick != null){
+			if (stick.gameObject.tag == "KomaStick") {
+				stick.SendMessage ("Nonrigid");
+			}
+		}
 	}
 
 	void OnTriggerEnter(Collider coli){
 		if (coli.gameObject.tag == "Guard0") {
-			stickingflag =2;
-			Debug.Log ("4");
+			if (flagD == 1) {
+				stickingflag = 2;
+			}
 		}
 	}
 
@@ -68,15 +78,26 @@ public class Koma1Script : MonoBehaviour {
 					fixedJoint.connectedBody = col.gameObject.GetComponent<Rigidbody> ();
 
 					fixedJoint.enableCollision = true;
-					//col.gameObject.GetComponent<Rigidbody> ().useGravity = false;
-					//Destroy(col.GetComponent<Rigidbody>());
+
 					col.gameObject.tag = "KomaStick";
 					col.transform.parent = this.transform;
 					stickingflag =1;
+					stick = col.gameObject;
 				}
 			} 
 			else if (flagC == 2) {
 					col.gameObject.SendMessage ("Damage");
+			}
+		}
+	}
+
+	void OnTriggerStay(Collider coli){
+		if(flagC ==2){
+		if (coli.gameObject.tag == "KomaStick") {
+				if (coli.GetComponent<Rigidbody> ()) {
+					Rigidbody rigid = (Rigidbody)this.GetComponent<Rigidbody> ();
+					GameObject.DestroyImmediate (rigid);
+				}
 			}
 		}
 	}
@@ -94,5 +115,23 @@ public class Koma1Script : MonoBehaviour {
 	public void FlagC(){
 		this.GetComponent<Renderer>().material=_material[0]; 
 		flagC = 1;
+		Debug.Log (2);
+		if(stick != null){
+			if (stick.gameObject.tag == "KomaStick") {
+				stick.SendMessage ("Onrigid");
+				Debug.Log (3);
+			}
+		}
+	}
+
+	public void Nonrigid(){
+		Rigidbody rigid = (Rigidbody)this.GetComponent<Rigidbody>();
+		GameObject.DestroyImmediate(rigid);
+	}
+
+	public void Onrigid(){
+		Rigidbody rigid = (Rigidbody)this.GetComponent<Rigidbody>();
+		//this.GetComponent<Rigidbody>();
+		Debug.Log (4);
 	}
 }

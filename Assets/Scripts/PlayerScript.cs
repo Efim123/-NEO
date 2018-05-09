@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
-	public float power = 0.0f;
+	float power = 30.0f;
 	public Vector3 direction = new Vector3 (1, 0, 1);
 	Vector3 clickPosDown; 
 	Vector3 clickPosUp;
@@ -86,5 +86,9 @@ public class PlayerScript : MonoBehaviour {
 			onePText.text = null;
 			twoPText.text = "2Pのターン";
 		}
+	}
+
+	public void FlagA(){
+		flagA = flagA;
 	}
 }
