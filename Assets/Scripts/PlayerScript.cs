@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
-	float power = 30.0f;
+	float power = 25.0f;
 	public Vector3 direction = new Vector3 (1, 0, 1);
 	Vector3 clickPosDown; 
 	Vector3 clickPosUp;
@@ -15,6 +15,7 @@ public class PlayerScript : MonoBehaviour {
 	int flagC = 1;
 	public GameObject tobasikoma;
 	float distance;
+
 
 	public Text onePText;
 	public Text twoPText;
@@ -37,6 +38,11 @@ public class PlayerScript : MonoBehaviour {
 					clickPosDown = Input.mousePosition;
 					tobasikoma = hit.collider.gameObject;
 					flagB = 0; //flagBがないと下のifが働かない
+						if (hit.collider.gameObject.name == "King1" || hit.collider.gameObject.name == "King2") {
+							power = 80.0f;
+						} else {
+							power = 25.0f;
+						}
 					}
 				}
 			}

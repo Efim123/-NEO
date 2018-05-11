@@ -8,8 +8,8 @@ public class Koma2Script : MonoBehaviour {
 	public Rigidbody rb;
 	public float soleMass = 1.5f;
 	int flagC =1;
+	int flagD =1;
 	int stickingflag =1;
-	int flagD =2;
 
 	float timer = 0.0f;
 	public GameObject crack;
@@ -52,9 +52,7 @@ public class Koma2Script : MonoBehaviour {
 
 	void OnTriggerEnter(Collider coli){
 		if (coli.gameObject.tag == "Guard1") {
-			if (flagD == 1) {
 				stickingflag = 2;
-			}
 		}
 	}
 
@@ -95,7 +93,12 @@ public class Koma2Script : MonoBehaviour {
 	}
 
 	public void Damage(){
-		komaHP--;
+		if(flagD ==1){
+			komaHP--;
+			int flagD = 2;
+			Invoke ("FlagD", 1.2f);
+			Debug.Log (3);
+		}
 	}
 
 	public void FlagC(){
@@ -115,7 +118,12 @@ public class Koma2Script : MonoBehaviour {
 
 	public void Onrigid(){
 		//this.GetComponent<Rigidbody>();
-		Rigidbody rigid = (Rigidbody)this.GetComponent<Rigidbody>();
-		Debug.Log (44);
+		this.gameObject.AddComponent<Rigidbody> ();
+
+	}
+
+	public void FlagD(){
+		int flagD = 1;
+		Debug.Log (4);
 	}
 }

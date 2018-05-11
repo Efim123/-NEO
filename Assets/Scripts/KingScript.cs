@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class KingScript : MonoBehaviour {
-	public int komaHP = 5;
+	int komaHP = 3;
 	public Text HPLabel;
 	public GameObject result;
 	int flagC =1;
@@ -44,11 +44,16 @@ public class KingScript : MonoBehaviour {
 
 	public void Damage(){
 		komaHP--;
-		Debug.Log ("6");
+		this.GetComponent<Renderer>().material=_material[2];
+		Invoke ("Material", 0.6f);
 	}
 
 	public void FlagC(){
 		flagC = 1;
+		this.GetComponent<Renderer>().material=_material[0];
+	}
+
+	public void Material(){
 		this.GetComponent<Renderer>().material=_material[0];
 	}
 }
